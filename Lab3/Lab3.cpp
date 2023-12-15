@@ -1,6 +1,7 @@
 #include <ctime>
 #include <iostream>
 #include <Windows.h>
+
 using namespace std;
 
 const int sizeArr = 6;
@@ -139,36 +140,90 @@ void printNewMatrixHorizontal(int(*arr)[sizeArr])
 	printArray(arr);
 }
 
-void shakerSort(int(*arr)[sizeArr])
+void doShakerSort(int (*arr)[sizeArr]) 
 {
-	int* start = &arr[0][0];
-	int* end = &arr[sizeArr * sizeArr - 1][sizeArr * sizeArr - 1];
-	int direction = 1;
+	bool swapped = true;
+	int *end = *(arr + sizeArr * sizeArr - 1);
 
-	while (start < end) 
-	{
-		for (int *i = start; i < end; i += direction) 
-		{
-			if ((*i) > *(i + 1)) 
-			{
-				swap((*i), *(i + 1));
+	while (swapped) {
+		swapped = false;
+		for (int *i = *arr; i < end; ++i) {
+			if ((*i) > *(i + 1)) {
+				swap(*i, *(i + 1));
+				swapped = true;
 			}
 		}
 
-		end -= direction;
+		if (!swapped) {
+			break;
+		}
 
-		for (int *i = end; i > start; i -= direction) 
-		{
-			if ((*i) < *(i - 1)) {
-				swap(*i, *(i - 1));
+		swapped = false;
+		end = end - 1;
+
+		// Проход справа налево
+		for (int *i = end - 1; i >= *arr; --i) {
+			if (*i > *(i + 1)) {
+				swap(*i, *(i + 1));
+				swapped = true;
 			}
 		}
 
-		*start += direction;
-		direction *= -1;
+		arr = arr + 1;
 	}
 	printArray(arr);
 }
+
+void insertionSort(int (*arr)[sizeArr]) {
+	for (int i = 0; i < sizeArr; i++) {
+		for (int j = 0; j < sizeArr; j++) {
+			int key = arr[i][j];
+			int k = j - 1;
+
+			while (k >= 0 && arr[i][k] > key) {
+				arr[i][k + 1] = arr[i][k];
+				k--;
+			}
+
+			arr[i][k + 1] = key;
+		}
+	}	
+	printArray(arr);
+}
+
+
+void sumNumArray(int(*arr)[sizeArr], int input)
+{
+	for (int i = 0; i < sizeArr; i++)
+		for (int j = 0; j < sizeArr; j++)
+			arr[i][j] += input;
+	printArray(arr);
+}
+
+void difNumArray(int(*arr)[sizeArr], int input)
+{
+	for (int i = 0; i < sizeArr; i++)
+		for (int j = 0; j < sizeArr; j++)
+			arr[i][j] -= input;
+	printArray(arr);
+}
+
+void mulNumArray(int(*arr)[sizeArr], int input)
+{
+	for (int i = 0; i < sizeArr; i++)
+		for (int j = 0; j < sizeArr; j++)
+			arr[i][j] *= input;
+	printArray(arr);
+}
+
+void divNumArray(int(*arr)[sizeArr], int input)
+{
+	for (int i = 0; i < sizeArr; i++)
+		for (int j = 0; j < sizeArr; j++)
+			arr[i][j] /= input;
+	printArray(arr);
+}
+
 
 int main()
 {
@@ -256,10 +311,54 @@ int main()
 		createArray(arr);
 		printArray(arr);
 		Sleep(500);
-		shakerSort(arr);
+		insertionSort(arr);
 		break;
-	case 4: 
-		
+	case 4:
+		int choice4;
+		cout << "1 : Array + input\n2 : Array - input\n3 : Array * input\n4 : Array / input\nEnter the number: ";
+		cin >> choice4;
+		switch (choice4)
+		{
+		case 1:
+			int input1;
+			cout << "Enter the number: ";
+			cin >> input1;
+			createArray(arr);
+			printArray(arr);
+			Sleep(1000);
+			sumNumArray(arr, input1);
+			break;
+		case 2:
+			int input2;
+			cout << "Enter the number: ";
+			cin >> input2;
+			createArray(arr);
+			printArray(arr);
+			Sleep(1000);
+			difNumArray(arr, input2);
+			break;
+		case 3:
+			int input3;
+			cout << "Enter the number: ";
+			cin >> input3;
+			createArray(arr);
+			printArray(arr);
+			Sleep(1000);
+			mulNumArray(arr, input3);
+			break;
+		case 4:
+			int input4;
+			cout << "Enter the number: ";
+			cin >> input4;
+			createArray(arr);
+			printArray(arr);
+			Sleep(1000);
+			divNumArray(arr, input4);
+			break;
+		default:
+			cout << "Error! You entered the wrong number!";
+			break;
+		}
 		break;
 	default: cout << "Error! You entered the wrong number!";
 		break;
