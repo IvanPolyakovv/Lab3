@@ -6,7 +6,7 @@ using namespace std;
 
 const int sizeArr = 6;
 
-void createArray(int(*arr)[sizeArr]) 
+void createArray(int(*arr)[sizeArr])
 {
 	for (int i = 0; i < sizeArr; i++)
 	{
@@ -35,10 +35,12 @@ void printArray(int(*arr)[sizeArr])
 	}
 }
 
+
+
 void printSnake(int(*arr)[sizeArr])
 {
 	for (int i = 0; i < sizeArr; i++)
-		for (int j = 0; j < sizeArr; j++) 
+		for (int j = 0; j < sizeArr; j++)
 		{
 			arr[i][j] = 0;
 		}
@@ -46,9 +48,9 @@ void printSnake(int(*arr)[sizeArr])
 	HANDLE hStdout;
 	COORD destCoord;
 	hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
-	for (int* ptr = arr[0], i = 0, x = 0, y = 0; ptr <= end + (sizeArr - 1); ptr++, i++, y++) 
+	for (int* ptr = arr[0], i = 0, x = 0, y = 0; ptr <= end + (sizeArr - 1); ptr++, i++, y++)
 	{
-		if (i % sizeArr == 0 && i != 0) 
+		if (i % sizeArr == 0 && i != 0)
 		{
 			x++;
 			y = 0;
@@ -57,7 +59,7 @@ void printSnake(int(*arr)[sizeArr])
 			else
 				ptr = &arr[x][y + sizeArr - 1];
 		}
-		if (x % 2 == 0) 
+		if (x % 2 == 0)
 		{
 			destCoord.X = x * 4;
 			destCoord.Y = y;
@@ -66,7 +68,7 @@ void printSnake(int(*arr)[sizeArr])
 			cout << *ptr;
 			Sleep(50);
 		}
-		else 
+		else
 		{
 			destCoord.X = x * 4;
 			destCoord.Y = sizeArr - y - 1;
@@ -78,18 +80,18 @@ void printSnake(int(*arr)[sizeArr])
 	}
 }
 
-void printNewMatrixCircle(int (*arr)[sizeArr])
+void printNewMatrixCircle(int(*arr)[sizeArr])
 {
-	for (int i = 0; i < (sizeArr / 2); i++) 
+	for (int i = 0; i < (sizeArr / 2); i++)
 	{
-		for (int j = 0; j < sizeArr; j++) 
+		for (int j = 0; j < sizeArr; j++)
 		{
 			swap(arr[i][j], arr[i + (sizeArr / 2)][j]);
 		}
 	}
-	for (int i = 0; i < (sizeArr / 2); i++) 
+	for (int i = 0; i < (sizeArr / 2); i++)
 	{
-		for (int j = 0; j < (sizeArr / 2); j++) 
+		for (int j = 0; j < (sizeArr / 2); j++)
 		{
 			swap(arr[i][j], arr[i + (sizeArr / 2)][j + (sizeArr / 2)]);
 		}
@@ -99,15 +101,15 @@ void printNewMatrixCircle(int (*arr)[sizeArr])
 
 void printNewMatrixDiagonal(int(*arr)[sizeArr])
 {
-	for (int i = 0; i < (sizeArr / 2); i++) 
+	for (int i = 0; i < (sizeArr / 2); i++)
 	{
-		for (int j = 0; j < sizeArr; j++) 
+		for (int j = 0; j < sizeArr; j++)
 		{
-			if (j < (sizeArr / 2)) 
+			if (j < (sizeArr / 2))
 			{
 				swap(arr[i][j], arr[i + (sizeArr / 2)][j + (sizeArr / 2)]);
 			}
-			else 
+			else
 			{
 				swap(arr[i][j], arr[i + (sizeArr / 2)][j - (sizeArr / 2)]);
 			}
@@ -118,9 +120,9 @@ void printNewMatrixDiagonal(int(*arr)[sizeArr])
 
 void printNewMatrixVertical(int(*arr)[sizeArr])
 {
-	for (int i = 0; i < sizeArr; i++) 
+	for (int i = 0; i < sizeArr; i++)
 	{
-		for (int j = 0; j < (sizeArr / 2); j++) 
+		for (int j = 0; j < (sizeArr / 2); j++)
 		{
 			swap(arr[i][j], arr[i][j + (sizeArr / 2)]);
 		}
@@ -130,9 +132,9 @@ void printNewMatrixVertical(int(*arr)[sizeArr])
 
 void printNewMatrixHorizontal(int(*arr)[sizeArr])
 {
-	for (int i = 0; i < (sizeArr / 2); i++) 
+	for (int i = 0; i < (sizeArr / 2); i++)
 	{
-		for (int j = 0; j < sizeArr; j++) 
+		for (int j = 0; j < sizeArr; j++)
 		{
 			swap(arr[i][j], arr[i + (sizeArr / 2)][j]);
 		}
@@ -140,15 +142,17 @@ void printNewMatrixHorizontal(int(*arr)[sizeArr])
 	printArray(arr);
 }
 
-void doShakerSort(int (*arr)[sizeArr]) 
-{
+
+void shakerSort(int(*arr)[sizeArr]) {
 	bool swapped = true;
-	int *end = *(arr + sizeArr * sizeArr - 1);
+	int* start = arr[0];
+	int* end = start + sizeArr * sizeArr - 1;
 
 	while (swapped) {
 		swapped = false;
-		for (int *i = *arr; i < end; ++i) {
-			if ((*i) > *(i + 1)) {
+
+		for (int* i = start; i < end; i++) {
+			if (*i > *(i + 1)) {
 				swap(*i, *(i + 1));
 				swapped = true;
 			}
@@ -161,35 +165,18 @@ void doShakerSort(int (*arr)[sizeArr])
 		swapped = false;
 		end = end - 1;
 
-		// Проход справа налево
-		for (int *i = end - 1; i >= *arr; --i) {
-			if (*i > *(i + 1)) {
-				swap(*i, *(i + 1));
+
+		for (int* j = end - 1; j >= start; j--) {
+			if (*j > *(j + 1)) {
+				swap(*j, *(j + 1));
 				swapped = true;
 			}
 		}
 
-		arr = arr + 1;
+		start = start + 1;
 	}
-	printArray(arr);
 }
 
-void insertionSort(int (*arr)[sizeArr]) {
-	for (int i = 0; i < sizeArr; i++) {
-		for (int j = 0; j < sizeArr; j++) {
-			int key = arr[i][j];
-			int k = j - 1;
-
-			while (k >= 0 && arr[i][k] > key) {
-				arr[i][k + 1] = arr[i][k];
-				k--;
-			}
-
-			arr[i][k + 1] = key;
-		}
-	}	
-	printArray(arr);
-}
 
 
 void sumNumArray(int(*arr)[sizeArr], int input)
@@ -224,30 +211,28 @@ void divNumArray(int(*arr)[sizeArr], int input)
 	printArray(arr);
 }
 
+void sumArrays(int(*arr1)[sizeArr], int(*arr2)[sizeArr]) {
+	for (int i = 0; i < sizeArr; i++)
+		for (int j = 0; j < sizeArr; j++)
+			arr1[i][j] += arr2[i][j];
+
+	printArray(arr1);
+}
 
 int main()
 {
 	int arr[sizeArr][sizeArr];
 	cout << "1. Using pointer arithmetic, fills a quadratic integer matrix of order N (6,8,10) with random numbers from 1 to N*N according to the schemes shown in the figures.\n" <<
-"2. Obtains a new matrix from the matrix of claim 1, rearranging its blocks in accordance with the schemes.\n" << 
-"3. Using pointer arithmetic, sorts the elements by shaker sort\n" <<
-"4. Reduces, increases, multiplies or divides all elements of the matrix by the number entered by the user\n\n";
+		"2. Obtains a new matrix from the matrix of claim 1, rearranging its blocks in accordance with the schemes.\n" <<
+		"3. Using pointer arithmetic, sorts the elements by shaker sort\n" <<
+		"4. Reduces, increases, multiplies or divides all elements of the matrix by the number entered by the user\n" <<
+		"5. Summarizes two arrays\n";
 	cout << "Enter the number: ";
 	int choice;
 	cin >> choice;
 	switch (choice)
 	{
-	case 1: 
-		int choice1;
-		cout << "1 - Circle print\n" << "2 - Snake print\n";
-		cout << "Enter the number: ";
-		cin >> choice1;
-		switch (choice1)
-		{
-		case 1: 
-			cout << "V razrabotke";
-			break;
-		case 2:
+	case 1:
 			createArray(arr);
 			cout << endl;
 			system("cls");
@@ -265,13 +250,8 @@ int main()
 				}
 			}
 			printSnake(arr);
-			break;
-		default: 
-			cout << "Error! You entered the wrong number!";
-			break;
-		}
 		break;
-	case 2: 
+	case 2:
 		int choice2;
 		cout << "1 - Circle\n" << "2 - Diagonal\n" << "3 - Vertical\n" << "4 - Horizontal\n";
 		cout << "Enter the number: ";
@@ -307,11 +287,12 @@ int main()
 			break;
 		}
 		break;
-	case 3: 
+	case 3:
 		createArray(arr);
 		printArray(arr);
 		Sleep(500);
-		insertionSort(arr);
+		shakerSort(arr);
+		printArray(arr);
 		break;
 	case 4:
 		int choice4;
@@ -359,6 +340,12 @@ int main()
 			cout << "Error! You entered the wrong number!";
 			break;
 		}
+		break;
+	case 5:
+		int arr2[sizeArr][sizeArr];
+		createArray(arr);
+		createArray(arr2);
+		sumArrays(arr, arr2);
 		break;
 	default: cout << "Error! You entered the wrong number!";
 		break;
